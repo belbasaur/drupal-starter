@@ -1,2 +1,2 @@
 # drupal-starter
-Drupal project starter
+Drupal theming starter
