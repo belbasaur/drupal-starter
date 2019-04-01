@@ -180,3 +180,63 @@ parameters:
 
 * To test if twig debug is working, open code inspector, where you will see `<!-- THEME DEBUG -->` comments. You will also find that you no longer have to manually clear cache.
 
+## Drupal 8 Theming - Part 03 - Gulp.js, Sass, LiveReload
+https://www.youtube.com/watch?v=vatnNkOKZ7o
+
+https://github.com/ivandoric/d8theming/releases/tag/3
+
+## Add assets to project (css, js, gulp)
+
+* Download assets from Olympos repo (https://github.com/ivandoric/olympos).
+
+* Copy `gulpfile.js` and `package.json` from the assets folder and paste in project folder (inside the folder that contains the `themes` folder, not the `themes` folder).
+
+* Copy `images`, `js`, `lib`, and `sass` folders from assets folder and paste in to belbox folder.
+
+* Delete `olympos.min.js` from (copied) js folder.
+
+* Commit new files
+
+## Update files to correspond to Drupal installation + theme
+
+### style.scss
+
+* Delete wordpress comments from style.scss file.
+
+### gulpfile.js
+
+* Rename paths: replace `./wp-content/themes/olympos` with `./themes/custom/belbox`
+
+* In sass task: change `.pipe(gulp.dest('./themes/custom/belbox'));` to `.pipe(gulp.dest('./themes/custom/belbox/css'));` (as defined in libraries file earlier)
+
+* In uglify task: rename `olympos.min.js` to `main.js` (as defined in libraries file earlier)
+
+* In watch task:  
+  * add css folder
+  * watch twig files not php files
+  * remove , './themes/custom/belbox/parts/**/*.php'
+i.e., 
+```
+gulp.watch(['./themes/custom/belbox/style.css', 't/themescustom/belboxs/*.php', 't/themescustom/belboxs/js/*.js', './themes/custom/belbox/parts/**/*.php'], function (files){
+        livereload.changed(files)
+    });
+```
+to 
+```
+gulp.watch(['./themes/custom/belbox/css/style.css', 't/themescustom/belboxs/*.php', 't/themescustom/belboxs/js/*.js', './themes/custom/belbox/parts/**/*.php'], function (files){
+        livereload.changed(files)
+    });
+```
+
+* Install modules required by gulp file. Go to terminal and run `npm install` in project folder.
+
+* Run `gulp watch`
+
+* To test if sass is working, go to a sass file, e.g., `globals.scss`, make a change and save. If it works a css folder will be created in belbox with `style.css` and `style.css.map` in it.
+
+* To test if `LiveReload` works, go to browser, start `LiveReload` plugin for Chrome. Change something in `_globals.scss`, go to site in browser and see if it updates automatically.
+
+* To test if `LiveReload` is working for twig files, change something in `page.html.twig`.
+
+* The `js` folder is currently empty, which causes a 404 error in the console. To test if js is working, go to `main.js` in `lib`, make a change and save. If it works, a `main.js` file will be added to the `js` folder. You can add other files to the `lib` folder and gulp will concatenate and uglify them into `js/main.js`.
+
