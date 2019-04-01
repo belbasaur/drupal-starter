@@ -114,3 +114,69 @@ stylesheets-remove:
 ```
 
 ℹ️ You’ll find the js in the source before the closing body tag.
+
+## Drupal 8 Theming - Part 02 - Disable Cache, Enable Twig Debug
+https://www.youtube.com/watch?v=rRsOxSuJ4OU
+
+* Enable twig debugging
+* Disable Drupal cache
+
+After creating a new theme, there will still be some sort of template that is being used. Where does it come from?
+
+If you create a new theme and you have content, but there isn’t a template for that, Drupal will default to its core template. This can be found in `core > modules >  system > templates > page.html.twig`.
+
+* Copy and paste this file into new theme folder.
+
+ℹ️ Twig: templating language that Drupal uses to display information on your pages 
+
+If you add content to `page.html.twig` in your template folder, the changes will not show unless you clear the cache `Configuration > Performance > Clear all caches`
+
+### How to disable Drupal cache (for development purposes):
+
+* Go to sites folder where you will find `example.settings.local.php`
+
+* Use file manager to copy `example.settings.local.php` into folder `sites > default` folder (which is a protected folder, so you’ll need to authenticate).
+
+* Rename `example.settings.local.php` to `settings.local.php`.
+
+* In `settings.local.php`, uncomment 
+```
+$settings['cache']['bins']['render'] = 'cache.backend.null';
+```
+
+* Go to `settings.php` (in default folder) and uncomment:
+```
+if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
+  include $app_root . '/' . $site_path . '/settings.local.php';
+}
+```
+👆 At the end of the file. This file is protected as well so you’ll need to select ‘overwrite’ when prompted.
+
+* Then visit https://drupal.test/core/rebuild.php to rebuild the site configuration.
+
+* Go to `default.services.yml` (in default folder), you can see there that 
+```
+debug: false
+auto_reload: null
+cache: true
+```
+
+We don’t want to change it in this file because we want to set up a local dev environment (separate dev from prod env).
+
+### To set up a local dev environment:
+
+So, go to `development.services.yml` (in the sites folder), and add the following (from `default.services.yml`):
+```
+parameters:
+  twig.config:
+    debug: true
+    auto_reload: true
+    cache: false
+```
+
+* You’ll have to manually clear cache once more in the CMS.
+
+* If you get an error in the browser, rebuild the site configuration again.
+
+* To test if twig debug is working, open code inspector, where you will see `<!-- THEME DEBUG -->` comments. You will also find that you no longer have to manually clear cache.
+
