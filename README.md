@@ -215,6 +215,7 @@ https://github.com/ivandoric/d8theming/releases/tag/3
   * add css folder
   * watch twig files not php files
   * remove , './themes/custom/belbox/parts/**/*.php'
+  * replace `*` with `main` in `t/themescustom/belboxs/js/*.js`
 i.e., 
 ```
 gulp.watch(['./themes/custom/belbox/style.css', 't/themescustom/belboxs/*.php', 't/themescustom/belboxs/js/*.js', './themes/custom/belbox/parts/**/*.php'], function (files){
@@ -223,7 +224,7 @@ gulp.watch(['./themes/custom/belbox/style.css', 't/themescustom/belboxs/*.php', 
 ```
 to 
 ```
-gulp.watch(['./themes/custom/belbox/css/style.css', 't/themescustom/belboxs/*.php', 't/themescustom/belboxs/js/*.js', './themes/custom/belbox/parts/**/*.php'], function (files){
+gulp.watch(['./themes/custom/belbox/css/style.css', 't/themescustom/belboxs/*.php', 't/themescustom/belboxs/js/main.js', './themes/custom/belbox/parts/**/*.php'], function (files){
         livereload.changed(files)
     });
 ```
@@ -240,3 +241,58 @@ gulp.watch(['./themes/custom/belbox/css/style.css', 't/themescustom/belboxs/*.ph
 
 * The `js` folder is currently empty, which causes a 404 error in the console. To test if js is working, go to `main.js` in `lib`, make a change and save. If it works, a `main.js` file will be added to the `js` folder. You can add other files to the `lib` folder and gulp will concatenate and uglify them into `js/main.js`.
 
+## Drupal 8 Theming - Part 04 - Blocks and Regions
+https://www.youtube.com/watch?v=DqTDiLzr4Iw
+
+* Explain what blocks and regions are
+* Make regions and put blocks into those regions
+
+```
+"In this Drupal 8 Theming tutorial we are going to be looking at setting up Drupal regions and adding blocks of content to them.
+
+Drupal 8 and all the other "Drupals" have something called regions, they are locations on your page where you can put pieces of content or functionality. You do that among other things by adding blocks to them.
+
+Blocks are "containers" that contain some content or functionality in them. You can easily move them around the regions by just dragging them in Drupal administration. Pretty great stuff."
+```
+
+### View existing blocks
+
+* In CMS, go to structure > block layout
+
+* Click on `Demonstrate block regions` to view block regions
+
+ℹ️ Blocks = pieces of content you can put on your page
+
+In the `page.html.twig` template you can see the regions, e.g. `{{ page.content }}`
+
+This corresponds to the regions we have in the CMS.
+
+### To override default regions / create custom regions
+
+* Go to info file `belbox.info.yml`
+
+* Define regions as follows:
+```
+regions:
+  content: 'Main Content'
+  header: 'Header'
+  footer: 'Footer'
+  sidebar: 'Sidebar'
+```
+
+ℹ️ When you make changes to the configuration file, you have to clear the cache to see the changes
+
+* Default regions should now be disabled.
+
+* Define regions created in the info file in the `page.html.twig` template, e.g.:
+
+```
+  <header role="banner">
+    {{ page.header }}
+  </header>
+
+```
+
+* Now you can drag and drop blocks into the defined regions in the CMS.
+
+* You can also create new custom blocks and add them to your regions in the CMS using the `place block` button.
