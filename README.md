@@ -296,3 +296,96 @@ regions:
 * Now you can drag and drop blocks into the defined regions in the CMS.
 
 * You can also create new custom blocks and add them to your regions in the CMS using the `place block` button.
+
+## Drupal 8 Theming - Part 05 - Let's Update Drupal 8
+https://www.youtube.com/watch?v=MlLq05X5xKw
+
+## Drupal 8 Theming - Part 06 - Theming the Header
+https://www.youtube.com/watch?v=jLlXR-ONyy8
+
+### Define homepage / frontpage
+
+* Currently `page.html.twig` is used, no matter what type of content we go to.
+
+* We want the front page to be different from all the other pages.
+
+* If you open inspector, it gives file suggestions:
+```
+<!-- FILE NAME SUGGESTIONS:
+   * html--front.html.twig
+   * html--node.html.twig
+   * html.html.twig
+-->
+```
+
+* We will name our file `html--front.html.twig`.
+
+* You can also see what template is currently being used to display this page:
+```
+<!-- BEGIN OUTPUT from 'core/themes/stable/templates/layout/html.html.twig' -->
+```
+
+* Rename `page.html.twig` to `html--front.html.twig`
+
+ℹ️ NOTE: `html--front.html.twig` does not work, so I changed it to `page--front.html.twig`
+https://www.drupal.org/docs/8/theming/twig/twig-template-naming-conventions
+
+* Clear cache (In CMS, go to configuration > Performance > Clear Cache)
+
+### Create header for front page
+
+* If you inspect the header you will find:
+```
+<!-- BEGIN OUTPUT from 'core/themes/stable/templates/block/block--system-branding-block.html.twig' -->
+```
+
+* I.e., In the CMS, if you go to `structure > Block layout`, you will see the header region is calling the block `Site branding`
+
+* We want to overwrite `block--system-branding-block.html.twig` (as well as customise other core templates)
+
+* Locate the file: `core > themes > stable > templates`
+
+* Copy the templates folder and paste in theme folder (`belbox`)
+
+ℹ️ Everytime you create a new file you need to clear the cache.
+
+* Now you will find that the branding is being called from 
+```
+<!-- BEGIN OUTPUT from 'themes/custom/belbox/templates/block/block--system-branding-block.html.twig' -->
+```
+
+#### Let’s customise the header:
+
+* Start `gulp watch` in terminal to do some CSS and turn on live reload in browser
+
+* Go to `page--front.html.twig`
+
+* Take the header out of layout container and place it above.
+
+* Add a container to the header
+
+* Add a class `main-header` to the header
+
+* Add some styles to `.main-header`
+
+* If you inspect the logo you will see that it calls `https://drupal.test/themes/custom/belbox/logo.svg` but we want it to get the logo from the images folder - we do not want to put images in the theme root.
+
+* Open the file `block--system-branding-block.html.twig` file in the `templates > block` folder 
+
+ℹ️ 
+Twig:
+`{% Do something %}`
+`{{ Print something }}`
+ℹ️ 
+
+* To change the path that is used for the logo:
+`<img src="{{ site_logo }}" alt="{{ 'Home'|t }}" />`
+
+* In the CMS, go to `Appearance`
+* Click on the theme’s `Settings` link
+* Go to `Global settings` tab
+* Untick `Use the logo supplied by the theme`
+* Define the path to the custom logo: `themes/custom/belbox/images/logo.svg`
+* Save configuration
+
+* Style logo to make it smaller
