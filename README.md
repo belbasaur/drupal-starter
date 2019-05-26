@@ -389,3 +389,49 @@ Twig:
 * Save configuration
 
 * Style logo to make it smaller
+
+* To remove the site name, go to the `Site branding` block and click on `Configure` and uncheck `Site name`
+
+## Drupal 8 Theming - Part 07 - Adding Main Navigation
+https://www.youtube.com/watch?v=KSsFt9rSNdU
+
+### First of all you need to add content to link to.
+
+* In the CMS, go to `Content > Add content > Basic page`
+
+* Create Basic page called ‘Movies’ and click `Save`. Add two more basic pages for ‘About’ and ‘Contact’.
+
+### Add pages to a menu
+
+* Go to `Structure > Menus`
+
+* Click on ‘Edit menu’ for the `Main navigation` menu
+
+* Add a link to ‘Movies’, ‘About us’, and ‘Contact’
+
+* Click and drag links to reorder in menu
+
+* Every type of content in Drupal is called a node and will be referenced by an id
+
+* To add the menu to the header region, go to `Structure > Block layout` and drag `Main navigation` into the header region and `Save blocks`
+
+### Create a new region for the menu
+
+* Go to `belbox.info.yml` and create a new region called `main_navigation`:
+```
+main_navigation: ‘Main Navigation’
+```
+
+* Clear cache
+
+* In the `block layout` section of the CMS, and drag the main navigation block into the main navigation region
+
+* Define the main navigation region on the front page header
+```
+<div class="main-navigation">
+    {{ page.main_navigation }}
+  </div>
+```
+
+* Style .main-navigation to look like a nav
+
