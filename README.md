@@ -435,3 +435,22 @@ main_navigation: ‘Main Navigation’
 
 * Style .main-navigation to look like a nav
 
+## Drupal 8 Theming - Part 08 - Creating Partials
+https://www.youtube.com/watch?v=RJrGumCYB_Y
+
+# Add a reusable header to subpages
+
+ℹ️ Partials: small blocks of code that you can reuse on your pages
+
+* If you inspect a subpage you can see what template it is using by inspecting it with the developer tools:
+```
+<!-- BEGIN OUTPUT from 'themes/custom/belbox/templates/layout/page.html.twig' -->
+```
+
+* Locate the template file and delete the existing header.
+
+* Create a new file for the reusable header and paste in the header code that was created for the homepage.
+
+* Save the file as `header.html.twig` in a new folder called `partials`. This file should be in your theme folder (`belbox`), as a sibling of the templates folder. 
+
+* To call the header, include `{% include directory ~ '/partials/header.html.twig' %}` above the container div in the frontpage and subpage templates.
